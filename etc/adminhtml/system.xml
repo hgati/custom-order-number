@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
    <system>
       <tab id="hgati" sortOrder="0" translate="label">
-         <label>Hgati</label>
+         <label>HGATI</label>
       </tab>
       <section id="custom_order_number" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="210" translate="label">
          <label>Custom Order Number</label>
