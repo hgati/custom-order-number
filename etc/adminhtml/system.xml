@@ -33,6 +33,9 @@
                         {increment_id} - Default increment id.<br/>
                         {str3} - Random string with 3 characters.<br/>
                         {num3} - Random number with 3 digits.<br/>
+                        {ms} - Milisecond with 3 digits.<br/>
+                        {sec} - Seconds with 2 digits.<br/>
+                        {min} - Minutes with 2 digits.<br/>
                         <b>If the number is greater than 9 then take 9 static.</b><br/>]]>
                     </comment>
             </field>

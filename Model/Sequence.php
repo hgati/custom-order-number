@@ -39,10 +39,7 @@ class Sequence extends \Magento\SalesSequence\Model\Sequence
      */
     protected $profile;
 
-    /**
-     * @var false|\Magento\Framework\DB\Adapter\AdapterInterface
-     */
-    private $connection;
+    private $resource;
 
     /**
      * @var string
@@ -75,7 +72,7 @@ class Sequence extends \Magento\SalesSequence\Model\Sequence
     ) {
 
         $this->meta = $meta;
-        $this->connection = $resource->getConnection('sales');
+        $this->resource = $resource;
         $this->pattern = $pattern;
         $this->profile = $profile;
         $this->scopeConfig = $scopeConfig;
@@ -167,8 +164,8 @@ class Sequence extends \Magento\SalesSequence\Model\Sequence
      */
     public function getNextValue()
     {
-        $this->connection->insert($this->meta->getSequenceTable(), []);
-        $this->lastIncrementId = $this->connection->lastInsertId($this->meta->getSequenceTable());
+        $this->resource->getConnection()->insert($this->meta->getSequenceTable(), []);
+        $this->lastIncrementId = $this->resource->getConnection()->lastInsertId($this->meta->getSequenceTable());
         return $this->getCurrentValue();
     }
 
@@ -191,28 +188,31 @@ class Sequence extends \Magento\SalesSequence\Model\Sequence
             $collection->addFieldtoFilter('main_table.increment_id', $pattern);
         }
         if ($type == 'invoice') {
+            $salesInvoiceTable = $this->resource->getTableName('sales_invoice');
             $collection->getSelect()->joinLeft(
-                        ['sales_invoice' => 'sales_invoice'],
-                        'main_table.entity_id = sales_invoice.order_id',
+                        [ $salesInvoiceTable => $salesInvoiceTable ],
+                        'main_table.entity_id = ' . $salesInvoiceTable . '.order_id',
                         []
                     );
-            $collection->addFieldtoFilter('sales_invoice.increment_id', $pattern);
+            $collection->addFieldtoFilter($salesInvoiceTable . '.increment_id', $pattern);
         }
         if ($type == 'shipment') {
+            $salesShipmentTable = $this->resource->getTableName('sales_shipment');
             $collection->getSelect()->joinLeft(
-                        ['sales_shipment' => 'sales_shipment'],
-                        'main_table.entity_id = sales_shipment.order_id',
+                        [ $salesShipmentTable => $salesShipmentTable ],
+                        'main_table.entity_id = ' . $salesShipmentTable . '.order_id',
                         []
                     );
-            $collection->addFieldtoFilter('sales_shipment.increment_id', $pattern);
+            $collection->addFieldtoFilter($salesShipmentTable . '.increment_id', $pattern);
         }
         if ($type == 'creditmemo') {
+            $salesCreditmemoTable = $this->resource->getTableName('sales_creditmemo');
             $collection->getSelect()->joinLeft(
-                        ['sales_creditmemo' => 'sales_creditmemo'],
-                        'main_table.entity_id = sales_creditmemo.order_id',
+                        [ $salesCreditmemoTable => $salesCreditmemoTable ],
+                        'main_table.entity_id = ' . $salesCreditmemoTable . '.order_id',
                         []
                     );
-            $collection->addFieldtoFilter('sales_creditmemo.increment_id', $pattern);
+            $collection->addFieldtoFilter($salesCreditmemoTable . '.increment_id', $pattern);
         }
         if (count($collection)) {
             return $this->generateIncrementId($patterns, $incrementId, $type);
@@ -228,7 +228,7 @@ class Sequence extends \Magento\SalesSequence\Model\Sequence
             $patterns = str_replace('}', '},', $patterns);
             $patterns = explode(',', $patterns);
             $patterns = array_filter($patterns);
-
+    
             $orderNumber = '';
             foreach ($patterns as $pattern) {
                 $pattern = preg_replace('/\s+/', '', $pattern);
@@ -246,15 +246,25 @@ class Sequence extends \Magento\SalesSequence\Model\Sequence
                         }
                     } else if ($pattern == 'increment_id') {
                         $orderNumber .= $incrementId;
+                    } else if ($pattern == 'ms') {
+                        // 현재 시간의 밀리초를 가져와서 3자리 숫자로 생성
+                        $orderNumber .= sprintf("%03d", substr(microtime(true), -3));
+                    } else if ($pattern == 'sec') {
+                        // 현재 시간의 초를 가져와서 2자리 숫자로 생성
+                        $orderNumber .= sprintf("%02d", date('s'));
+                    } else if ($pattern == 'min') {
+                        // 현재 시간의 분을 가져와서 2자리 숫자로 생성
+                        $orderNumber .= sprintf("%02d", date('i'));
                     }
                 } else {
                     $orderNumber .= $pattern;
                 }
             }
-
+    
             return $orderNumber;
         } else {
             return $incrementId;
         }
     }
+    
 }
