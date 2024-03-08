@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
    <system>
-      <tab id="hgati" sortOrder="200" translate="label">
+      <tab id="hgati" sortOrder="0" translate="label">
          <label>Hgati</label>
       </tab>
       <section id="custom_order_number" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="210" translate="label">
