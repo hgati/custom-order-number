@@ -50,6 +50,9 @@ class Sequence extends \Magento\SalesSequence\Model\Sequence
     private $pattern;
     public $temp;
 
+    protected $mathRandom;
+    protected $orderCollection;
+
     /**
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
