@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+   <system>
+      <tab id="hgati" sortOrder="200" translate="label">
+         <label>Hgati</label>
+      </tab>
+      <section id="custom_order_number" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="210" translate="label">
+         <label>Custom Order Number</label>
+         <tab>hgati</tab>
+         <resource>Hgati_CustomOrderNumber::config</resource>
+         <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+            <label>General</label>
+            <field id="order" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+               <label>Order Number</label>
+               <comment/>
+            </field>
+            <field id="invoice" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+               <label>Invoice Number</label>
+               <comment/>
+            </field>
+            <field id="shipment" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+               <label>Shipment Number</label>
+               <comment/>
+            </field>
+            <field id="creditmemo" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+               <label>Credit Memo Number</label>
+               <comment><![CDATA[
+                  Leave blank for default increment number.<br/>
+                  <b>Sample Format</b><br/>
+                  ABC_{str3}{num3}{increment_id}<br/>
+                  <br/>
+                  <b>The Following variables can be used.</b><br/>
+                        {increment_id} - Default increment id.<br/>
+                        {str3} - Random string with 3 characters.<br/>
+                        {num3} - Random number with 3 digits.<br/>
+                        <b>If the number is greater than 9 then take 9 static.</b><br/>]]>
+                    </comment>
+            </field>
+         </group>
+      </section>
+   </system>
+</config>

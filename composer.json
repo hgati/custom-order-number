@@ -1,0 +1,23 @@
+{
+    "name": "hgati/custom-order-number",
+    "description": "Magento2 Module - Custom Order Number",
+    "type": "magento2-module",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Dennis Lee",
+            "email": "cobays@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "version": "1.0.0",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Hgati\\CustomOrderNumber\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}
